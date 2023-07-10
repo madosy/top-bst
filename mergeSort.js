@@ -1,5 +1,5 @@
 function mergeSort(inputArray) {
-  if (inputArray.length == 1) return inputArray;
+  if (inputArray.length <= 1) return inputArray;
   else {
     let midIndex = Math.floor(inputArray.length / 2);
     let firstHalf = mergeSort(inputArray.slice(0, midIndex));

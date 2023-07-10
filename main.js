@@ -1,9 +1,13 @@
 import sortedArrayToBST from "./sortedArrayToBST.js";
-import mergeSort from "./mergeSort.js";
+import Tree from "./Tree.js";
+
+import prettyPrint from "./prettyPrint.js";
 
 console.log("hello");
 
-let inputArray = [10, 20, 30];
-let result = sortedArrayToBST(inputArray);
+let test1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let test2 = [1, 2, 3, 4, 5, 6, 7];
 
-console.log(result);
+let tree = new Tree(test2);
+console.log(tree);
+prettyPrint(tree.root);
