@@ -100,5 +100,34 @@ class Tree {
   find(value) {
     return this.findAt(this.root, value);
   }
+
+  levelOrder(callbackfn = null) {
+    let queue = [];
+    let values = [];
+    queue.push(this.root);
+
+    while (queue.length > 0) {
+      let firstItem = queue.shift();
+      if (firstItem.left !== null) queue.push(firstItem.left);
+      if (firstItem.right !== null) queue.push(firstItem.right);
+
+      callbackfn !== null ? callbackfn(firstItem) : values.push(firstItem.data);
+    }
+    if (callbackfn == null) return values;
+  }
+
+  preorder(callbackfn = null) {
+    var values = [];
+    let root = this.root;
+    preorderAt(root, callbackfn);
+    if (callbackfn == null) return values;
+
+    function preorderAt(root, callbackfn) {
+      if (root == null) return;
+      callbackfn !== null ? callbackfn(root) : values.push(root.data);
+      preorderAt(root.left, callbackfn);
+      preorderAt(root.right, callbackfn);
+    }
+  }
 }
 export default Tree;
