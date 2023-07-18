@@ -39,7 +39,6 @@ class Tree {
 
   insert(value) {
     this.insertAt(this.root, value);
-    prettyPrint(this.root);
   }
 
   getSmallestNode(root) {
@@ -128,6 +127,90 @@ class Tree {
       preorderAt(root.left, callbackfn);
       preorderAt(root.right, callbackfn);
     }
+  }
+
+  inorder(callbackfn = null) {
+    var values = [];
+    let root = this.root;
+    inorderAt(root, callbackfn);
+    if (callbackfn == null) return values;
+
+    function inorderAt(root, callbackfn) {
+      if (root == null) return;
+      inorderAt(root.left, callbackfn);
+      callbackfn !== null ? callbackfn(root) : values.push(root.data);
+      inorderAt(root.right, callbackfn);
+    }
+  }
+
+  postorder(callbackfn = null) {
+    var values = [];
+    let root = this.root;
+    postorderAt(root, callbackfn);
+    if (callbackfn == null) return values;
+
+    function postorderAt(root, callbackfn) {
+      if (root == null) return;
+      postorderAt(root.left, callbackfn);
+      postorderAt(root.right, callbackfn);
+      callbackfn !== null ? callbackfn(root) : values.push(root.data);
+    }
+  }
+
+  height(node = this.root) {
+    //return the deepest
+    let isLeafNode = node.left == null && node.right == null;
+    let hasLeftChild = node.left !== null;
+    let hasRightChild = node.right !== null;
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    if (isLeafNode) return 0;
+    if (hasLeftChild) leftHeight = 1 + this.height(node.left);
+    if (hasRightChild) rightHeight = 1 + this.height(node.right);
+    return leftHeight > rightHeight ? leftHeight : rightHeight;
+  }
+
+  depth(node = this.root) {
+    let jump = 0;
+    let currentNode = this.root;
+    let isNodeFound = false;
+    let isLeafNode = (node) => node.left == null && node.right == null;
+
+    while (isNodeFound == false) {
+      if (currentNode == node) isNodeFound = true;
+      else if (isLeafNode(currentNode)) {
+        jump = null;
+        break;
+      } else {
+        currentNode.data > node.data
+          ? (currentNode = currentNode.left)
+          : (currentNode = currentNode.right);
+        jump++;
+      }
+    }
+    return jump;
+  }
+
+  isBalanced(node = this.root) {
+    let result = isBalancedAt(node);
+    return result == -1 ? false : true;
+
+    function isBalancedAt(root) {
+      if (root == null) return 0;
+      let leftHeight = isBalancedAt(root.left);
+      let rightHeight = isBalancedAt(root.right);
+
+      if (leftHeight == -1 || rightHeight == -1) return -1;
+      if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+      else return Math.max(leftHeight, rightHeight) + 1;
+    }
+  }
+
+  rebalance() {
+    let orderedArray = this.inorder();
+    this.root = this.buildTree(orderedArray);
+    return this.root;
   }
 }
 export default Tree;
